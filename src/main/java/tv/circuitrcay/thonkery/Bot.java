@@ -25,10 +25,7 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import org.json.JSONObject;
-import tv.circuitrcay.thonkery.commands.CatCommand;
-import tv.circuitrcay.thonkery.commands.EvalCommand;
-import tv.circuitrcay.thonkery.commands.SayCommand;
-import tv.circuitrcay.thonkery.commands.UrbanDictionaryCommand;
+import tv.circuitrcay.thonkery.commands.*;
 
 
 import java.nio.file.Files;
