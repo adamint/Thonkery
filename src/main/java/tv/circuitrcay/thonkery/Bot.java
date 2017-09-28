@@ -19,6 +19,8 @@ import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
 import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
+import net.dean.jraw.http.UserAgent;
+import net.dean.jraw.http.oauth.Credentials;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
@@ -26,6 +28,7 @@ import org.json.JSONObject;
 import tv.circuitrcay.thonkery.commands.CatCommand;
 import tv.circuitrcay.thonkery.commands.EvalCommand;
 import tv.circuitrcay.thonkery.commands.SayCommand;
+import tv.circuitrcay.thonkery.commands.UrbanDictionaryCommand;
 
 
 import java.nio.file.Files;
@@ -38,18 +41,19 @@ public class Bot {
         String token = object.getString("token");
         String ownerid = object.getString("ownerid");
 
+
         EventWaiter waiter = new EventWaiter();
 
         CommandClientBuilder client = new CommandClientBuilder();
         client.useDefaultGame();
         client.setOwnerId(ownerid);
         client.setPrefix("th/");
-
         client.addCommands(
                 new PingCommand(),
                 new EvalCommand(),
                 new SayCommand(),
                 new CatCommand(),
+                new UrbanDictionaryCommand(),
                 new ShutdownCommand());
 
         new JDABuilder(AccountType.BOT)

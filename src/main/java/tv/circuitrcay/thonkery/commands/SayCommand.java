@@ -25,6 +25,7 @@ public class SayCommand extends Command {
         this.help = "copies you, duh!";
         this.ownerCommand = false;
         this.guildOnly = true;
+        this.category = new Category("Miscellaneous");
     }
 
     @Override

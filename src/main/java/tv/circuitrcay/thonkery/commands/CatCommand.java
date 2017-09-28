@@ -29,13 +29,14 @@ public class CatCommand extends Command {
         this.name = "cat";
         this.help = "random cat";
         this.guildOnly = false;
+        this.category = new Category("Miscellaneous");
     }
 
     @Override
     protected void execute(CommandEvent event) {
         try {
             HTTP req = new HTTP();
-            String res = req.doGetRequest("https://random.cat/meow");
+            String res = req.get("https://random.cat/meow");
             JSONObject obj = new JSONObject(res);
             String cat = obj.getString("file");
             event.reply(cat);

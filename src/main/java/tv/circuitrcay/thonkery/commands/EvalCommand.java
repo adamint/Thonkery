@@ -28,6 +28,7 @@ public class EvalCommand extends Command {
         this.help = "Evaluates Nashorn JS code (Owner Only)";
         this.ownerCommand = true;
         this.guildOnly = false;
+        this.category = new Category("Utility");
     }
 
 
