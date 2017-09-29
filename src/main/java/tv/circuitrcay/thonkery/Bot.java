@@ -29,6 +29,7 @@ import tv.circuitrcay.thonkery.commands.*;
 import tv.circuitrcay.thonkery.utils.ConfigWriter;
 
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -36,6 +37,16 @@ public class Bot {
     public static void main(String[] args) throws Exception {
         ConfigWriter cr = new ConfigWriter();
         cr.write();
+        File file = new File("bot.json");
+        // Shitcode Start
+        boolean exists = file.exists();
+        if (exists) {
+            String config = new String(Files.readAllBytes(Paths.get("bot.json")));
+            JSONObject object = new JSONObject(config);
+            String token = object.getString("token");
+            String ownerid = object.getString("ownerid");
+        }
+        // Shitcode end
         String config = new String(Files.readAllBytes(Paths.get("bot.json")));
         JSONObject object = new JSONObject(config);
         String token = object.getString("token");

@@ -30,6 +30,7 @@ public class ConfigWriter {
             try {
                 File file = new File("bot.json");
                 file.createNewFile();
+
                 FileWriter fw = new FileWriter(file);
                 System.out.println("Setting up config....");
                 fw.write(obj.toString());
