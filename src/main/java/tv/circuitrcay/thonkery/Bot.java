@@ -19,39 +19,22 @@ import com.jagrosh.jdautilities.commandclient.CommandClientBuilder;
 import com.jagrosh.jdautilities.commandclient.examples.PingCommand;
 import com.jagrosh.jdautilities.commandclient.examples.ShutdownCommand;
 import com.jagrosh.jdautilities.waiter.EventWaiter;
-import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.http.oauth.Credentials;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import org.json.JSONObject;
 import tv.circuitrcay.thonkery.commands.*;
-import tv.circuitrcay.thonkery.utils.ConfigWriter;
 
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Bot {
     public static void main(String[] args) throws Exception {
-        ConfigWriter cr = new ConfigWriter();
-        cr.write();
-        File file = new File("bot.json");
-        // Shitcode Start
-        boolean exists = file.exists();
-        if (exists) {
-            String config = new String(Files.readAllBytes(Paths.get("bot.json")));
-            JSONObject object = new JSONObject(config);
-            String token = object.getString("token");
-            String ownerid = object.getString("ownerid");
-        }
-        // Shitcode end
         String config = new String(Files.readAllBytes(Paths.get("bot.json")));
         JSONObject object = new JSONObject(config);
         String token = object.getString("token");
         String ownerid = object.getString("ownerid");
-
 
         EventWaiter waiter = new EventWaiter();
 
@@ -66,6 +49,7 @@ public class Bot {
                 new CatCommand(),
                 new UrbanDictionaryCommand(),
                 new RespectsCommand(),
+                new SuggestionCommand(),
                 new ShutdownCommand());
 
         new JDABuilder(AccountType.BOT)
