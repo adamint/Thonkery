@@ -51,6 +51,7 @@ public class Bot {
                 new SayCommand(),
                 new CatCommand(),
                 new UrbanDictionaryCommand(),
+                new RespectsCommand(),
                 new ShutdownCommand());
 
         new JDABuilder(AccountType.BOT)
