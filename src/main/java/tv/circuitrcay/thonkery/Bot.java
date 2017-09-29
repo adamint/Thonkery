@@ -26,6 +26,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import org.json.JSONObject;
 import tv.circuitrcay.thonkery.commands.*;
+import tv.circuitrcay.thonkery.utils.ConfigWriter;
 
 
 import java.nio.file.Files;
@@ -33,6 +34,8 @@ import java.nio.file.Paths;
 
 public class Bot {
     public static void main(String[] args) throws Exception {
+        ConfigWriter cr = new ConfigWriter();
+        cr.write();
         String config = new String(Files.readAllBytes(Paths.get("bot.json")));
         JSONObject object = new JSONObject(config);
         String token = object.getString("token");
