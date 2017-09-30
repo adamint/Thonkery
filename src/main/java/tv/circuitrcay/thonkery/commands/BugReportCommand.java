@@ -7,22 +7,21 @@ import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.awt.*;
 
+public class BugReportCommand extends Command {
 
-public class SuggestionCommand extends Command {
-
-    public SuggestionCommand() {
-        this.name = "suggest";
-        this.help = "suggest commands for Thonkery";
-        this.guildOnly = false;
+    public BugReportCommand() {
+        this.name = "report";
+        this.help = "report a bug in Thonkery";
         this.category = new Category("Support");
+        this.guildOnly = false;
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        TextChannel channel = event.getGuild().getTextChannelById("339926027151081472");
+        TextChannel channel = event.getGuild().getTextChannelById("339345868471664640");
         EmbedBuilder eb = new EmbedBuilder()
-                .setTitle("Suggestion")
-                .setColor(Color.BLUE)
+                .setTitle("Bug Report :eyes:")
+                .setColor(Color.RED)
                 .addField("Username", event.getAuthor().getName()+"#"+event.getAuthor().getDiscriminator(), false)
                 .addField("Suggestion", event.getArgs(), false);
         channel.sendMessage(eb.build()).queue();

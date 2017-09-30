@@ -50,6 +50,7 @@ public class Bot {
                 new UrbanDictionaryCommand(),
                 new RespectsCommand(),
                 new SuggestionCommand(),
+                new BugReportCommand(),
                 new ShutdownCommand());
 
         new JDABuilder(AccountType.BOT)
