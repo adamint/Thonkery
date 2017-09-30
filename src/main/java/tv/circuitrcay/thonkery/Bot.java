@@ -24,6 +24,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import org.json.JSONObject;
 import tv.circuitrcay.thonkery.commands.*;
+import tv.circuitrcay.thonkery.utils.HTTP;
 
 
 import java.nio.file.Files;
