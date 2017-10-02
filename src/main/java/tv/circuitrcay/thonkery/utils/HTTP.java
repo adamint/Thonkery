@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2017 CircuitRCAY
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,22 +20,12 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class HTTP {
-    OkHttpClient client = new OkHttpClient();
+    public static OkHttpClient client = new OkHttpClient();
     public String get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        Response response = client.newCall(request).execute();
-        return response.body().string();
-    }
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public String post(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(JSON, json);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
