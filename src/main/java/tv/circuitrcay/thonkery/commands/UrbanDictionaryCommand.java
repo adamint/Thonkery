@@ -15,47 +15,45 @@
  */
 package tv.circuitrcay.thonkery.commands;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import tv.circuitrcay.thonkery.utils.HTTP;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import tv.circuitrcay.thonkery.execution.Command;
+import tv.circuitrcay.thonkery.utils.WebRequester;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static tv.circuitrcay.thonkery.main.Thonkery.gson;
 
 public class UrbanDictionaryCommand extends Command {
-
-    public UrbanDictionaryCommand() {
-        this.name = "urban";
-        this.help = "searches Urban Dictionary";
-        this.guildOnly = false;
-        this.category = new Category("Miscellaneous");
-        this.botPermissions = new Permission[]{Permission.MESSAGE_EMBED_LINKS};
+    public UrbanDictionaryCommand(String name, String help, Category category, boolean usableInDM) {
+        super(name, help, category, usableInDM);
     }
 
     @Override
-    protected void execute(CommandEvent event) {
-        try {
-            HTTP req = new HTTP();
-            String res = req.get("http://api.urbandictionary.com/v0/define?term=" + event.getArgs().toLowerCase());
-            Gson gson = new GsonBuilder().create();
-            JsonObject json = gson.fromJson(res, JsonElement.class).getAsJsonObject();
-            JsonObject result = json.get("list").getAsJsonArray().get(0).getAsJsonObject();
-            String word = result.get("word").getAsString();
-            String permalink = result.get("permalink").getAsString();
-            String definition = result.get("definition").getAsString();
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setTitle(word)
-                    .addField("Definition", definition, false)
-                    .addField("Link", permalink, false);
-            event.reply(embed.build());
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void execute(List<String> arguments, MessageReceivedEvent event) {
+        if (arguments.size() == 0) event.getChannel().sendMessage("You need to include a search term!").queue();
+        else {
+            try {
+                JsonObject json = gson.fromJson(WebRequester.REQUESTER.get("http://api.urbandictionary.com/v0/define?term=" +
+                        URLEncoder.encode(arguments.stream().collect(Collectors.joining(" ")), "UTF-8")), JsonElement.class).getAsJsonObject();
+                JsonObject result = json.get("list").getAsJsonArray().get(0).getAsJsonObject();
+                String word = result.get("word").getAsString();
+                String permalink = result.get("permalink").getAsString();
+                String definition = result.get("definition").getAsString();
+                event.getChannel().sendMessage(new EmbedBuilder()
+                        .setTitle(word)
+                        .addField("Definition", definition, false)
+                        .addField("Link", permalink, false).build()).queue();
+            } catch (IOException e) {
+                event.getChannel().sendMessage("Oh no, an error occured! I've logged this exception so the developers can fix it.").queue();
+                e.printStackTrace();
+            }
         }
     }
 }

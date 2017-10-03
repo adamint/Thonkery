@@ -15,18 +15,21 @@
  */
 package tv.circuitrcay.thonkery.utils;
 
-import okhttp3.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
 
 import java.io.IOException;
 
-public class HTTP {
-    public static OkHttpClient client = new OkHttpClient();
-    public String get(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+public class WebRequester {
+    public static WebRequester REQUESTER = new WebRequester();
+    private OkHttpClient client = new OkHttpClient();
 
-        Response response = client.newCall(request).execute();
-        return response.body().string();
+    private WebRequester() {
+    }
+
+    public String get(String url) throws IOException {
+        ResponseBody body = client.newCall(new Request.Builder().url(url).build()).execute().body();
+        return body == null ? null : body.string();
     }
 }

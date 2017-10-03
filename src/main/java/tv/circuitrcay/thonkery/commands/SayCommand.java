@@ -15,25 +15,22 @@
  **/
 package tv.circuitrcay.thonkery.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import tv.circuitrcay.thonkery.execution.Command;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SayCommand extends Command {
-
-    public SayCommand() {
-        this.name = "say";
-        this.help = "copies you, duh!";
-        this.ownerCommand = false;
-        this.guildOnly = true;
-        this.category = new Category("Miscellaneous");
+    public SayCommand(String name, String help, Category category, boolean usableInDM) {
+        super(name, help, category, usableInDM);
     }
 
     @Override
-    protected void execute(CommandEvent event) {
-        try {
-            event.reply(event.getArgs().toLowerCase());
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void execute(List<String> arguments, MessageReceivedEvent event) {
+        if (arguments.size() == 0) event.getChannel().sendMessage("You need to include something to say!").queue();
+        else {
+            event.getChannel().sendMessage(arguments.stream().collect(Collectors.joining(" "))).queue();
         }
     }
 }

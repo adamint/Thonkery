@@ -15,33 +15,26 @@
  */
 package tv.circuitrcay.thonkery.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
-
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
-import tv.circuitrcay.thonkery.utils.HTTP;
+import tv.circuitrcay.thonkery.execution.Command;
+import tv.circuitrcay.thonkery.utils.WebRequester;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CatCommand extends Command {
 
-    public CatCommand() {
-        this.name = "cat";
-        this.help = "random cat";
-        this.guildOnly = false;
-        this.category = new Category("Miscellaneous");
+    public CatCommand(String name, String help, Category category, boolean usableInDM) {
+        super(name, help, category, usableInDM);
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(List<String> arguments, MessageReceivedEvent event) {
         try {
-            HTTP req = new HTTP();
-            String res = req.get("https://random.cat/meow");
-            JSONObject obj = new JSONObject(res);
-            String cat = obj.getString("file");
-            event.reply(cat);
+            event.getChannel().sendMessage(new JSONObject(WebRequester.REQUESTER.get("https://random.cat/meow")).getString("file")).queue();
         } catch (IOException e) {
-            e.printStackTrace();
+            event.getChannel().sendMessage("An exception occured while trying to execute this command :(").queue();
         }
     }
 }

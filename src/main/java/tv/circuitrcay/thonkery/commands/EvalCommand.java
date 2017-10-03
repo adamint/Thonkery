@@ -15,35 +15,31 @@
  **/
 package tv.circuitrcay.thonkery.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import tv.circuitrcay.thonkery.execution.Command;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EvalCommand extends Command {
-
-    public EvalCommand() {
-        this.name = "eval";
-        this.help = "Evaluates Nashorn JS code (Owner Only)";
-        this.ownerCommand = true;
-        this.guildOnly = false;
-        this.category = new Category("Utility");
+    public EvalCommand(String name, String help, Category category, boolean usableInDM) {
+        super(name, help, category, usableInDM);
     }
 
-
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(List<String> arguments, MessageReceivedEvent event) {
         ScriptEngine se = new ScriptEngineManager().getEngineByName("Nashorn");
         se.put("jda", event.getJDA());
-        se.put("client", event.getClient());
         se.put("guild", event.getGuild());
         se.put("channel", event.getChannel());
         se.put("event", event);
         try {
-            event.reply(event.getClient().getSuccess() + "Success:\n```\n"+se.eval(event.getArgs()) + "```");
+            event.getChannel().sendMessage("Success:\n```java\n" +
+                    se.eval(arguments.stream().collect(Collectors.joining("  "))) + "```").queue();
         } catch (Exception e) {
-            event.reply(event.getClient().getError() + "Error:\n```\n"+e+ "```");
+            event.getChannel().sendMessage("Error:\n```\n" + e + "```").queue();
         }
     }
 }

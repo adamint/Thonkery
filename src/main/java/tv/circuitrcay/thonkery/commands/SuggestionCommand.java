@@ -15,33 +15,34 @@
  **/
 package tv.circuitrcay.thonkery.commands;
 
-import com.jagrosh.jdautilities.commandclient.Command;
-import com.jagrosh.jdautilities.commandclient.CommandEvent;
+
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import tv.circuitrcay.thonkery.execution.Command;
 
 import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static tv.circuitrcay.thonkery.main.Thonkery.jda;
 
 public class SuggestionCommand extends Command {
-
-    public SuggestionCommand() {
-        this.name = "suggest";
-        this.help = "suggest commands for Thonkery";
-        this.guildOnly = false;
-        this.category = new Category("Support");
+    public SuggestionCommand(String name, String help, Category category, boolean usableInDM) {
+        super(name, help, category, usableInDM);
     }
 
     @Override
-    protected void execute(CommandEvent event) {
-        Guild g = null;
-        TextChannel channel = g.getTextChannelById("339345868471664640");
-        EmbedBuilder eb = new EmbedBuilder()
-                .setTitle("Suggestion")
-                .setColor(Color.BLUE)
-                .addField("Username", event.getAuthor().getName()+"#"+event.getAuthor().getDiscriminator(), false)
-                .addField("Suggestion", event.getArgs(), false);
-        channel.sendMessage(eb.build()).queue();
+    public void execute(List<String> arguments, MessageReceivedEvent event) {
+        if (arguments.size() == 0) event.getChannel().sendMessage("You need to include a suggestion!").queue();
+        else {
+        TextChannel channel = jda.getTextChannelById("339926027151081472");
+        if (channel == null) System.out.println("The bug report channel wasn't found!");
+        else {
+            channel.sendMessage(new EmbedBuilder()
+                    .setTitle("Suggestion").setColor(Color.BLUE)
+                    .addField("Username", event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator(), false)
+                    .addField("Suggestion", arguments.stream().collect(Collectors.joining(" ")), false).build()).queue();
+        }
     }
-}
+}}
