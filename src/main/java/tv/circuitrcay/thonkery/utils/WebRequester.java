@@ -17,6 +17,7 @@ package tv.circuitrcay.thonkery.utils;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import java.io.IOException;
@@ -29,7 +30,9 @@ public class WebRequester {
     }
 
     public String get(String url) throws IOException {
-        ResponseBody body = client.newCall(new Request.Builder().url(url).build()).execute().body();
+        Response response = client.newCall(new Request.Builder().url(url).build()).execute();
+        ResponseBody body = response.body();
+        response.close();
         return body == null ? null : body.string();
     }
 }
