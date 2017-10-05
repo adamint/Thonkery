@@ -31,8 +31,8 @@ public class WebRequester {
 
     public String get(String url) throws IOException {
         Response response = client.newCall(new Request.Builder().url(url).build()).execute();
-        ResponseBody body = response.body();
+        String body = response.body().string();
         response.close();
-        return body == null ? null : body.string();
+        return body;
     }
 }
